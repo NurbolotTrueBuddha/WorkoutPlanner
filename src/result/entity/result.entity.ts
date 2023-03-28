@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { BodyParam } from "src/user/entity/body-params.entity";
+import { BodyParam } from "src/auth/entity/body-params.entity";
 import { Water } from "./water.entity";
 import { Step } from "./step.entity";
 import { Dream } from "./dream.entity";

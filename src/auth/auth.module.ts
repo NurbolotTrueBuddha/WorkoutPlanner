@@ -8,10 +8,12 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { UserRepository } from './repository/user.repository';
+import { BodyParam } from './entity/body-params.entity';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, BodyParam]),
     PassportModule,
     JwtModule.register({
       secret: 'keiz',

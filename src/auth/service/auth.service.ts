@@ -5,11 +5,12 @@ import { RegisterDto } from '../utils/dto/registration.dto';
 import { UserRepository } from '../repository/user.repository';
 import * as bcrypt from "bcryptjs";
 
+
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<UserI> {

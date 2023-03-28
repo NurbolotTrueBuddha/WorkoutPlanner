@@ -1,4 +1,4 @@
-import { Controller, Request, Body, Post, UseGuards, Get } from '@nestjs/common';
+import { Controller, Request, Body, Post, UseGuards, Header } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginDto } from '../utils/dto/login.dto';
 import { LocalAuthGuard } from '../strategy/local-auth.guard';
@@ -6,13 +6,16 @@ import { AuthService } from '../service/auth.service';
 import { AccessTokenDto } from '../utils/dto/access-token.dto';
 import { JwtAuthGuard } from '../strategy/jwt-auth.guard';
 import { RegisterDto } from '../utils/dto/registration.dto';
+import { BodyParamsDto } from '../utils/dto/body-params.dto';
+import { UserRepository } from '../repository/user.repository';
 
 @ApiTags('Auth')
 @Controller()
 export class AuthController {
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private userRepository: UserRepository
   ) {}
 
 
@@ -30,11 +33,14 @@ export class AuthController {
   }
   
   @ApiBearerAuth()
+  @ApiResponse({ status: 200, type: BodyParamsDto })
   @UseGuards(JwtAuthGuard)
-  @Get('auth/hello')
-  hello() {
-    return 'hello world';
-  }
+  @Post('auth/body-params')
+  async addBodyParams(@Request() req, @Body() params: BodyParamsDto) {
 
-  
+    params.user_id = req.user.userId
+
+    return await this.userRepository.addBodyParams(params);
+
+  }
 }

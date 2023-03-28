@@ -7,15 +7,14 @@ export class BodyParam {
     body_id: string;
 
     @Column()
-    height: string;
+    height: number;
 
     @Column()
-    weight: string;
+    weight: number;
 
     @Column()
-    age: string;
+    age: number;
 
-    @OneToOne(() => User)
-    @JoinColumn({ name: 'user_id' })
-    user_profile: User;
+    @Column()
+    user_id: string
 }
