@@ -4,7 +4,7 @@ export class BodyParamsDto {
   @ApiProperty()
 
     @ApiProperty()
-    user_id: string;
+    user_id?: string;
 
     @ApiProperty()
     height: number;

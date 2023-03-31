@@ -1,4 +1,4 @@
-import { Controller, Request, Body, Post, UseGuards, Header } from '@nestjs/common';
+import { Controller, Request, Body, Post, UseGuards, Get, Param } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginDto } from '../utils/dto/login.dto';
 import { LocalAuthGuard } from '../strategy/local-auth.guard';
@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../strategy/jwt-auth.guard';
 import { RegisterDto } from '../utils/dto/registration.dto';
 import { BodyParamsDto } from '../utils/dto/body-params.dto';
 import { UserRepository } from '../repository/user.repository';
+import { ByIdDto } from '../utils/dto/by-id.dto';
 
 @ApiTags('Auth')
 @Controller()
@@ -41,6 +42,17 @@ export class AuthController {
     params.user_id = req.user.userId
 
     return await this.userRepository.addBodyParams(params);
+
+  }
+
+  @ApiBearerAuth()
+  @ApiResponse({ type: String, status: 202})
+  @UseGuards(JwtAuthGuard)
+  @Get('/getUserBy:id')
+  
+  async getUserById(@Param() id:ByIdDto){
+
+    return this.userRepository.getUserById(id)
 
   }
 }

@@ -13,8 +13,9 @@ export class AuthService {
     private userRepository: UserRepository,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<UserI> {
-    const userEntity = await this.userRepository.findByUsername(username);
+  async validateUser(email: string, pass: string): Promise<UserI> {
+
+    const userEntity = await this.userRepository.findByEmail(email);
 
     if(!userEntity) {
       return null;
@@ -23,15 +24,17 @@ export class AuthService {
     const isCorrectPwd = bcrypt.compareSync(pass, userEntity.user_password)
 
     if (isCorrectPwd) {
+
       const { user_password, ...result } = userEntity;
       return result;
+
     }
 
     return null;   
   }
 
   async login(user: UserI) {
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: user.email, sub: user.id };
 
     return {
       access_token: this.jwtService.sign(payload),
